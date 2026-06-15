@@ -4,6 +4,58 @@ interface CarrierCanvasProps {
   carriers: string[];
 }
 
+const CARRIER_MUTED_THEMES: Record<string, { bg: string, text: string, border: string, dot: string, activeClass: string }> = {
+  '可穿戴手环': {
+    bg: 'bg-pink-50',
+    text: 'text-pink-600',
+    border: 'border-pink-300',
+    dot: 'bg-pink-500',
+    activeClass: 'bg-pink-400 text-white border-pink-400 shadow-sm shadow-pink-100'
+  },
+  '挂坠': {
+    bg: 'bg-amber-50',
+    text: 'text-amber-700',
+    border: 'border-amber-300',
+    dot: 'bg-amber-500',
+    activeClass: 'bg-amber-400 text-white border-amber-400 shadow-sm shadow-amber-100'
+  },
+  '智能鞋带扣': {
+    bg: 'bg-emerald-50',
+    text: 'text-emerald-700',
+    border: 'border-emerald-300',
+    dot: 'bg-emerald-500',
+    activeClass: 'bg-emerald-400 text-white border-emerald-400 shadow-sm shadow-emerald-100'
+  },
+  '小行李箱': {
+    bg: 'bg-sky-50',
+    text: 'text-sky-700',
+    border: 'border-sky-300',
+    dot: 'bg-sky-500',
+    activeClass: 'bg-sky-400 text-white border-sky-400 shadow-sm shadow-sky-100'
+  },
+  '背包': {
+    bg: 'bg-violet-50',
+    text: 'text-violet-700',
+    border: 'border-violet-300',
+    dot: 'bg-violet-500',
+    activeClass: 'bg-violet-400 text-white border-violet-400 shadow-sm shadow-violet-100'
+  },
+  '旅行印章机': {
+    bg: 'bg-rose-50',
+    text: 'text-rose-700',
+    border: 'border-rose-300',
+    dot: 'bg-rose-500',
+    activeClass: 'bg-rose-400 text-white border-rose-400 shadow-sm shadow-rose-100'
+  },
+  '贴纸机': {
+    bg: 'bg-orange-50',
+    text: 'text-orange-700',
+    border: 'border-orange-300',
+    dot: 'bg-orange-500',
+    activeClass: 'bg-orange-400 text-white border-orange-400 shadow-sm shadow-orange-100'
+  }
+};
+
 export default function CarrierCanvas({ carriers }: CarrierCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [selectedCarrier, setSelectedCarrier] = useState<string>('');
@@ -28,12 +80,12 @@ export default function CarrierCanvas({ carriers }: CarrierCanvasProps) {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Background: Playful warm drawing paper texture
-    ctx.fillStyle = '#fffdf7'; // soft yellow-cream paper
+    // Background: Playful, sweet cream milk color instead of clinical white
+    ctx.fillStyle = '#fffcfa';
     ctx.fillRect(0, 0, width, height);
 
-    // Draw playful sketch-grid lines (resembles kids mathematics notebook)
-    ctx.strokeStyle = '#f1e4d3'; 
+    // Draw precise child-friendly blueprint grids (20px spacing with whimsical pastel colors)
+    ctx.strokeStyle = '#fbf0eb'; 
     ctx.lineWidth = 1;
     const gridSize = 20;
 
@@ -50,484 +102,406 @@ export default function CarrierCanvas({ carriers }: CarrierCanvasProps) {
       ctx.stroke();
     }
 
-    // Centered paper coordinates
+    // Technical Alignment Crosshair with sweet peach-orange accent
+    ctx.strokeStyle = '#fed7aa';
+    ctx.lineWidth = 1.2;
+    
+    // Corner Markups - Cute round target style marks
+    const drawCornerCircularMark = (x: number, y: number) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.stroke();
+    };
+    drawCornerCircularMark(20, 20);
+    drawCornerCircularMark(width - 20, 20);
+    drawCornerCircularMark(20, height - 20);
+    drawCornerCircularMark(width - 20, height - 20);
+
+    // Cute Kid-themed scale bar in bottom left
+    ctx.strokeStyle = '#fdba74';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(25, height - 16);
+    ctx.lineTo(75, height - 16);
+    ctx.moveTo(25, height - 20); ctx.lineTo(25, height - 12);
+    ctx.moveTo(75, height - 20); ctx.lineTo(75, height - 12);
+    ctx.stroke();
+
+    ctx.fillStyle = '#f97316';
+    ctx.font = 'bold 8px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('50 mm 积木刻度', 50, height - 24);
+
     const cx = width / 2;
     const cy = height / 2;
 
-    // Draw some little background kid doodles (tiny stars and clouds)
-    // Star 1
-    ctx.strokeStyle = '#fed7aa';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(35, 35, 3, 0, Math.PI * 2);
-    ctx.stroke();
-    // Cloud 1
-    ctx.fillStyle = 'rgba(224, 242, 254, 0.4)';
-    ctx.beginPath();
-    ctx.arc(width - 40, 35, 8, 0, Math.PI * 2);
-    ctx.arc(width - 32, 33, 10, 0, Math.PI * 2);
-    ctx.arc(width - 24, 35, 7, 0, Math.PI * 2);
-    ctx.fill();
-
     if (!selectedCarrier) {
-      // Draw playful empty state
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = '#b45309'; // warm amber-700
-      ctx.font = 'bold 13px "Fredoka", "Quicksand", sans-serif';
+      ctx.fillStyle = '#f97316';
+      ctx.font = 'bold 13px "Inter", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('🧸 呜呼！暂无选中的设备载体', cx, cy - 15);
+      ctx.fillText('🍭 未选定物理载体 🎈', cx, cy - 8);
       
-      ctx.fillStyle = '#d97706';
-      ctx.font = '11px "Quicksand", sans-serif';
-      ctx.fillText('请在步骤二勾选你喜欢的形态 (例如手环/挂坠)', cx, cy + 12);
-      ctx.fillText('即可开始绘制童趣 AI 物理草图 ✨', cx, cy + 30);
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10.5px "Inter", sans-serif';
+      ctx.fillText('请在步骤中选定形态载体以载入 2D 糖果色机构概念图', cx, cy + 14);
+      ctx.fillText('（支持手环、挂坠、鞋扣、背包等童趣模型）', cx, cy + 28);
       return;
     }
 
-    // Set crayon style strokes
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // Helper to draw crayon style lines (rough hand-drawn feel by dual painting)
-    const drawCrayonPath = (action: () => void, strokeColor: string, weight: number = 3) => {
+    // Helper to draw clean paths with sweet color fills
+    const drawColoredShape = (
+      strokeColor: string, 
+      fillColor: string, 
+      weight: number, 
+      drawFn: () => void
+    ) => {
       ctx.save();
-      // Apply shadow to mimic soft wax color bleeds
-      ctx.shadowColor = strokeColor;
-      ctx.shadowBlur = 1.5;
       ctx.strokeStyle = strokeColor;
+      ctx.fillStyle = fillColor;
       ctx.lineWidth = weight;
-      action();
+      ctx.beginPath();
+      drawFn();
+      ctx.fill();
+      ctx.stroke();
       ctx.restore();
     };
 
-    // Draw specific carrier design vector mapping
+    // Draw specific carrier design vector mapping in a gorgeous, playful style
     switch (selectedCarrier) {
       case '可穿戴手环':
-        // Draw band underneath in a soft pastel pink-red crayon tone
-        drawCrayonPath(() => {
-          ctx.beginPath();
-          // Wristband background circle
-          ctx.arc(cx, cy, 65, 0, Math.PI * 2);
-          ctx.stroke();
-        }, '#fda4af', 4); // soft rose wrist ring
+        // Wristband background strap (Bubblegum pink)
+        drawColoredShape('#f43f5e', '#ffe4e6', 2.5, () => {
+          ctx.arc(cx - 20, cy, 65, 0, Math.PI * 2);
+        });
 
-        drawCrayonPath(() => {
-          ctx.beginPath();
-          ctx.arc(cx, cy, 55, 0, Math.PI * 2);
-          ctx.stroke();
-        }, '#fecdd3', 2);
+        // Inner security skin layer (Cream lilac)
+        drawColoredShape('#fb7185', '#fff1f2', 1.5, () => {
+          ctx.arc(cx - 20, cy, 55, 0, Math.PI * 2);
+        });
 
-        // Core Bezel: Cute cat/bear-eared wrist device on top
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fffdf7';
-          ctx.beginPath();
-          // Cute cat ear left
-          ctx.moveTo(cx - 20, cy - 65);
-          ctx.lineTo(cx - 28, cy - 85);
-          ctx.lineTo(cx - 10, cy - 75);
-          // Cute cat ear right
-          ctx.moveTo(cx + 20, cy - 65);
-          ctx.lineTo(cx + 28, cy - 85);
-          ctx.lineTo(cx + 10, cy - 75);
-          ctx.stroke();
-          ctx.fill();
+        // Cat or Bear-eared Main Tracker Module Case (Active Coral Red)
+        drawColoredShape('#e11d48', '#fda4af', 2.2, () => {
+          // Left rounded ear
+          ctx.arc(cx - 36, cy - 65, 12, 0, Math.PI * 2);
+          // Right rounded ear
+          ctx.arc(cx - 4, cy - 65, 12, 0, Math.PI * 2);
+        });
 
-          // Bezel round-rect body
-          ctx.beginPath();
-          ctx.roundRect(cx - 25, cy - 75, 50, 32, 10);
-          ctx.fill();
-          ctx.stroke();
-        }, '#f43f5e', 3); // vibrant rose-500 crayon
+        // Core round rect display screen housing
+        drawColoredShape('#be123c', '#ffffff', 2.2, () => {
+          ctx.roundRect(cx - 42, cy - 58, 44, 34, 10);
+        });
 
-        // Draw Screen Smiles face :)
-        drawCrayonPath(() => {
-          ctx.beginPath();
-          // eyes
-          ctx.arc(cx - 8, cy - 62, 2, 0, Math.PI * 2);
-          ctx.arc(cx + 8, cy - 62, 2, 0, Math.PI * 2);
-          ctx.fill();
-          // smile mouth arc
-          ctx.beginPath();
-          ctx.arc(cx, cy - 58, 6, 0.1, Math.PI - 0.1);
-          ctx.stroke();
-        }, '#1e293b', 2);
+        // Playful smiling HUD face on display screen
+        drawColoredShape('#be123c', '#be123c', 1.5, () => {
+          ctx.arc(cx - 28, cy - 43, 2, 0, Math.PI * 2);
+          ctx.arc(cx - 12, cy - 43, 2, 0, Math.PI * 2);
+        });
+        ctx.beginPath();
+        ctx.strokeStyle = '#be123c';
+        ctx.lineWidth = 1.8;
+        ctx.arc(cx - 20, cy - 39, 4, 0, Math.PI);
+        ctx.stroke();
 
-        // Kid-themed label callout annotations
-        ctx.fillStyle = '#be123c'; // rose-700
-        ctx.font = 'bold 11px "Quicksand", sans-serif';
+        // Professional child CMF comments in rich styling
+        ctx.fillStyle = '#e11d48';
+        ctx.font = 'bold 11.5px "Inter", sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('🐱 萌猫咪物理外壳', cx + 75, cy - 35);
+        ctx.fillText('LSR 食品级液体硅胶双色手环', cx + 55, cy - 35);
         
-        ctx.fillStyle = '#0f766e'; // teal-700
-        ctx.font = '10px "Quicksand", sans-serif';
-        ctx.fillText('🍭 亲肤防敏硅胶 (Soft Food-Grade)', cx + 75, cy - 18);
-        ctx.fillText('✨ 双色透光呼吸灯提示', cx + 75, cy - 2);
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText('・双射包模：邵氏51°A极柔手感', cx + 55, cy - 18);
+        ctx.fillText('・物理阻尼：倒角R>=6.8mm无切角', cx + 55, cy - 2);
+        ctx.fillText('・色彩配置：糖果玫瑰粉配防敏膜面', cx + 55, cy + 14);
 
-        ctx.fillStyle = '#6d28d9'; // purple-700
-        ctx.fillText('📏 宝宝手骨适配 R:55mm', cx - 120, cy + 85);
+        ctx.fillStyle = '#db2777';
+        ctx.font = 'bold 8.5px "JetBrains Mono", monospace';
+        ctx.fillText('内壁防滑双向排汗防丢环圈 D:110mm', cx - 145, cy + 85);
         break;
 
       case '挂坠':
-        // Draws pendant styled as a bright yellow lucky star!
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fffbeb'; // amber-50 background for star
-          ctx.beginPath();
-          // Draw lucky star
+        // Draw hanging loop lanyard (Cute Skyblue braided rope)
+        drawColoredShape('#0284c7', '#e0f2fe', 2, () => {
+          ctx.moveTo(cx - 12, cy - 25);
+          ctx.quadraticCurveTo(cx - 12, cy - 55, cx - 12, cy - 85);
+          ctx.quadraticCurveTo(cx - 12, cy - 55, cx + 4, cy - 25);
+        });
+
+        // Pendant body is drawn as a cute golden star or blossom cookie
+        drawColoredShape('#d97706', '#fef3c7', 2.2, () => {
           const spikes = 5;
-          const outerRadius = 40;
+          const outerRadius = 38;
           const innerRadius = 18;
           let rot = (Math.PI / 2) * 3;
-          let x = cx;
-          let y = cy + 10;
+          let x = cx - 12;
+          let y = cy + 15;
           const step = Math.PI / spikes;
 
-          ctx.moveTo(cx, cy + 10 - outerRadius);
+          ctx.moveTo(cx - 12, y - outerRadius);
           for (let i = 0; i < spikes; i++) {
-            x = cx + Math.cos(rot) * outerRadius;
-            y = cy + 10 + Math.sin(rot) * outerRadius;
+            x = cx - 12 + Math.cos(rot) * outerRadius;
+            y = cy + 15 + Math.sin(rot) * outerRadius;
             ctx.lineTo(x, y);
             rot += step;
 
-            x = cx + Math.cos(rot) * innerRadius;
-            y = cy + 10 + Math.sin(rot) * innerRadius;
+            x = cx - 12 + Math.cos(rot) * innerRadius;
+            y = cy + 15 + Math.sin(rot) * innerRadius;
             ctx.lineTo(x, y);
             rot += step;
           }
-          ctx.lineTo(cx, cy + 10 - outerRadius);
           ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }, '#eab308', 3); // yellow neon crayon outline
+        });
 
-        // Add a friendly smiley heart in the centers
-        drawCrayonPath(() => {
-          ctx.beginPath();
-          ctx.arc(cx - 6, cy + 6, 1.8, 0, Math.PI * 2);
-          ctx.arc(cx + 6, cy + 6, 1.8, 0, Math.PI * 2);
-          ctx.fill();
-          
-          ctx.beginPath();
-          ctx.arc(cx, cy + 12, 5, 0.1, Math.PI - 0.1);
-          ctx.stroke();
-        }, '#b45309', 2);
+        // Face profile detail - cute star smiley
+        drawColoredShape('#b45309', '#b45309', 1.5, () => {
+          ctx.arc(cx - 18, cy + 10, 1.8, 0, Math.PI * 2);
+          ctx.arc(cx - 6, cy + 10, 1.8, 0, Math.PI * 2);
+        });
+        ctx.beginPath();
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 1.8;
+        ctx.arc(cx - 12, cy + 15, 3.5, 0, Math.PI);
+        ctx.stroke();
 
-        // Top fabric dynamic safety hanging loop
-        drawCrayonPath(() => {
-          ctx.beginPath();
-          ctx.moveTo(cx - 8, cy - 28);
-          ctx.quadraticCurveTo(cx, cy - 55, cx, cy - 85);
-          ctx.quadraticCurveTo(cx, cy - 55, cx + 8, cy - 28);
-          ctx.stroke();
-        }, '#3b82f6', 2.5); // sky-blue lanyard string
-
-        // Annotations
-        ctx.fillStyle = '#a16207'; // amber-800
-        ctx.font = 'bold 11px "Quicksand", sans-serif';
+        // CMF and Specs notes
+        ctx.fillStyle = '#b45309';
+        ctx.font = 'bold 11.5px "Inter", sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('⭐️ 黄金向日葵幸运星挂坠', cx + 60, cy + 10);
+        ctx.fillText('防勒脱卸骨传导声振挂坠', cx + 55, cy - 5);
         
-        ctx.fillStyle = '#0f766e';
-        ctx.font = '10px "Quicksand", sans-serif';
-        ctx.fillText('🎀 防勒窒息安全扣挂绳 (Safety Grip)', cx + 60, cy + 26);
-        ctx.fillText('🔊 骨传导提示 + 微振动马达', cx + 60, cy + 42);
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText('・材质：环保阻燃抗菌ABS树脂壳', cx + 55, cy + 12);
+        ctx.fillText('・拉力扣：受恒拉力>45N自主物理脱销', cx + 55, cy + 28);
+        ctx.fillText('・扬声：骨传导振片安全过滤中低频', cx + 55, cy + 44);
 
-        ctx.fillStyle = '#be123c';
-        ctx.fillText('⚖️ 纯机身仅重 16克 (Super Light)', cx - 110, cy - 55);
+        ctx.fillStyle = '#d97706';
+        ctx.font = 'bold 8.5px "JetBrains Mono", monospace';
+        ctx.fillText('星月饼干挂绳扣重: 仅 14.5g', cx - 145, cy - 55);
         break;
 
       case '智能鞋带扣':
-        // Angel Wings / Butterfly kid lace clip
-        // Left Wing
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#f0fdf4'; // Light green back fill
-          ctx.beginPath();
-          ctx.moveTo(cx - 10, cy);
-          ctx.bezierCurveTo(cx - 45, cy - 40, cx - 65, cy - 20, cx - 45, cy);
-          ctx.bezierCurveTo(cx - 65, cy + 20, cx - 45, cy + 40, cx - 10, cy);
+        // Clovers active green wing clip layout (Left wing)
+        drawColoredShape('#059669', '#d1fae5', 2, () => {
+          ctx.moveTo(cx - 12, cy);
+          ctx.bezierCurveTo(cx - 45, cy - 35, cx - 65, cy - 15, cx - 45, cy);
+          ctx.bezierCurveTo(cx - 65, cy + 15, cx - 45, cy + 35, cx - 12, cy);
           ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }, '#22c55e', 2.5); // friendly emerald-500
+        });
 
-        // Right Wing
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#f0fdf4';
-          ctx.beginPath();
-          ctx.moveTo(cx + 10, cy);
-          ctx.bezierCurveTo(cx + 45, cy - 40, cx + 65, cy - 20, cx + 45, cy);
-          ctx.bezierCurveTo(cx + 65, cy + 20, cx + 45, cy + 40, cx + 10, cy);
+        // Right wing
+        drawColoredShape('#059669', '#d1fae5', 2, () => {
+          ctx.moveTo(cx + 12, cy);
+          ctx.bezierCurveTo(cx + 45, cy - 35, cx + 65, cy - 15, cx + 45, cy);
+          ctx.bezierCurveTo(cx + 65, cy + 15, cx + 45, cy + 35, cx + 12, cy);
           ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }, '#22c55e', 2.5);
+        });
 
-        // Center oval button
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fff';
-          ctx.beginPath();
-          ctx.arc(cx, cy, 14, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }, '#3b82f6', 3.5); // sky blue center
+        // Center protective capsule (Sunny yellow cookie style)
+        drawColoredShape('#d97706', '#fef3c7', 2, () => {
+          ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+        });
 
-        drawCrayonPath(() => {
-          ctx.beginPath();
-          ctx.arc(cx - 4, cy - 2, 1.5, 0, Math.PI * 2);
-          ctx.arc(cx + 4, cy - 2, 1.5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(cx, cy + 2, 4, 0, Math.PI);
-          ctx.stroke();
-        }, '#1e293b', 1.5);
+        // Smiling capsule face design
+        drawColoredShape('#b45309', '#b45309', 1, () => {
+          ctx.arc(cx - 4, cy - 3, 1.5, 0, Math.PI * 2);
+          ctx.arc(cx + 4, cy - 3, 1.5, 0, Math.PI * 2);
+        });
+        ctx.beginPath();
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 1.8;
+        ctx.arc(cx, cy + 2, 4, 0, Math.PI);
+        ctx.stroke();
 
-        // Annotations
-        ctx.fillStyle = '#15803d'; // green-700
-        ctx.font = 'bold 11px "Quicksand", sans-serif';
+        // Technical annotations
+        ctx.fillStyle = '#047857';
+        ctx.font = 'bold 11.5px "Inter", sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('👟 奔跑小飞翼鞋带搭扣', cx - 110, cy - 65);
+        ctx.fillText('微型10轴IMU智能鞋扣', cx - 110, cy - 65);
         
-        ctx.fillStyle = '#1e3a8a'; // navy-900
-        ctx.font = '10px "Quicksand", sans-serif';
-        ctx.fillText('⚡ 蹦蹦跳跳压力传感器搭载', cx + 62, cy - 10);
-        ctx.fillText('🧱 物理双扣咬合，稳固不丢掉', cx + 62, cy + 6);
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText('・外壳：高抗冲超声波熔接尼龙玻纤', cx + 62, cy - 10);
+        ctx.fillText('・卡接：免踩带双档高阻咬合卡槽', cx + 62, cy + 6);
+        ctx.fillText('・颜色：丛林四叶草绿，防丢率+90%', cx + 62, cy + 22);
         break;
 
       case '小行李箱':
-        // Cute playful chubby penguin suitcase with round body & wheels!
-        // Body outline
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#f8fafc';
-          ctx.beginPath();
-          ctx.roundRect(cx - 50, cy - 45, 100, 105, 25);
-          ctx.fill();
-          ctx.stroke();
-        }, '#0284c7', 3.5); // bright sky-600
+        // Skyblue Rounded penguin suitcase outline
+        drawColoredShape('#0284c7', '#e0f2fe', 2.2, () => {
+          ctx.roundRect(cx - 50, cy - 35, 100, 95, 20);
+        });
 
-        // Cute penguin face belly shape
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fffbeb';
-          ctx.beginPath();
-          ctx.ellipse(cx, cy + 15, 38, 40, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }, '#bae6fd', 1.5);
+        // Inner belly panel layout (Cute snow belly)
+        drawColoredShape('#0ea5e9', '#fafafa', 1.2, () => {
+          ctx.ellipse(cx, cy + 20, 36, 36, 0, 0, Math.PI * 2);
+        });
 
-        // Smile eyes and tiny orange penguin beak
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#eab308'; // orange/yellow peak
-          ctx.beginPath();
-          // left eye arc
-          ctx.arc(cx - 15, cy - 10, 2.5, 0, Math.PI * 2);
-          // right eye arc
-          ctx.arc(cx + 15, cy - 10, 2.5, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Beak
-          ctx.beginPath();
-          ctx.moveTo(cx - 6, cy - 2);
-          ctx.lineTo(cx + 6, cy - 2);
-          ctx.lineTo(cx, cy + 6);
+        // Face profile details (Cute yellow penguin mouth/cheeks)
+        drawColoredShape('#ea580c', '#fed7aa', 1.2, () => {
+          ctx.arc(cx - 15, cy + 5, 2.5, 0, Math.PI * 2);
+          ctx.arc(cx + 15, cy + 5, 2.5, 0, Math.PI * 2);
+        });
+        drawColoredShape('#d97706', '#f59e0b', 1, () => {
+          ctx.moveTo(cx - 6, cy + 12);
+          ctx.lineTo(cx + 6, cy + 12);
+          ctx.lineTo(cx, cy + 18);
           ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }, '#d97706', 2);
+        });
 
-        // Suitcase Pulling rod
-        drawCrayonPath(() => {
-          ctx.beginPath();
-          ctx.moveTo(cx - 24, cy - 45);
-          ctx.lineTo(cx - 24, cy - 85);
-          ctx.lineTo(cx + 24, cy - 85);
-          ctx.lineTo(cx + 24, cy - 45);
-          ctx.stroke();
+        // Suitcase Pulling telescopic rod (Yellow star handle!)
+        drawColoredShape('#475569', '#cbd5e1', 2, () => {
+          ctx.rect(cx - 22, cy - 68, 5, 33);
+          ctx.rect(cx + 17, cy - 68, 5, 33);
+        });
+        // Drawing star head on the handle
+        drawColoredShape('#d97706', '#fef3c7', 2, () => {
+          ctx.roundRect(cx - 16, cy - 75, 32, 10, 4);
+        });
 
-          // Cute circular handle on top
-          ctx.beginPath();
-          ctx.arc(cx, cy - 85, 8, 0, Math.PI * 2);
-          ctx.stroke();
-        }, '#0284c7', 3);
-
-        // Two chubby circular roller wheels at the bottom
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
+        // Two bouncy roller wheels in deep active teal
+        drawColoredShape('#115e59', '#14b8a6', 2, () => {
           ctx.arc(cx - 32, cy + 60, 10, 0, Math.PI * 2);
           ctx.arc(cx + 32, cy + 60, 10, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }, '#64748b', 2.5);
+        });
 
-        // Annotations
+        // Suitcase specifications details
         ctx.fillStyle = '#0369a1';
-        ctx.font = 'bold 11px "Quicksand", sans-serif';
+        ctx.font = 'bold 11.5px "Inter", sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('🐧 伴游超萌企鹅拉杆箱', cx + 64, cy - 35);
+        ctx.fillText('小企鹅自随智感声像拉杆箱', cx + 64, cy - 35);
         
-        ctx.fillStyle = '#b45309';
-        ctx.font = '10px "Quicksand", sans-serif';
-        ctx.fillText('🎡 双向多重防倾倒静音避震轮', cx + 64, cy - 18);
-        ctx.fillText('📡 内嵌UWB高精度近场雷达', cx + 64, cy - 2);
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText('・聚碳酸酯：三层复合防撞防刮壳体', cx + 64, cy - 18);
+        ctx.fillText('・UWB芯片：定位精度控制在5cm以内', cx + 64, cy - 2);
+        ctx.fillText('・防撞锁嘴：阻尼减震结构消弭侧翻迹', cx + 64, cy + 14);
         break;
 
       case '背包':
-        // Playful dino-shelled backpack or bear-eared backpack
-        // Main outline
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fff';
-          ctx.beginPath();
-          // Draw backpack bag curves
-          ctx.moveTo(cx - 45, cy + 60);
-          ctx.quadraticCurveTo(cx - 45, cy - 55, cx, cy - 55);
-          ctx.quadraticCurveTo(cx + 45, cy - 55, cx + 45, cy + 60);
+        // Bear-eared backpack outline in cheerful Grape violet
+        drawColoredShape('#7c3aed', '#f3e8ff', 2.2, () => {
+          ctx.moveTo(cx - 42, cy + 60);
+          ctx.quadraticCurveTo(cx - 42, cy - 50, cx + 3, cy - 50);
+          ctx.quadraticCurveTo(cx + 48, cy - 50, cx + 48, cy + 60);
           ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }, '#8b5cf6', 3.5); // sweet violet-500
+        });
 
-        // Draw cute baby-bear ears on top of bagpack
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#f3e8ff';
-          ctx.beginPath();
-          ctx.arc(cx - 30, cy - 55, 12, 0, Math.PI * 2);
-          ctx.arc(cx + 30, cy - 55, 12, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }, '#8b5cf6', 2);
+        // Soft toy bear ears shapes on top (Lavender violet)
+        drawColoredShape('#7c3aed', '#edd9ff', 1.2, () => {
+          ctx.arc(cx - 24, cy - 50, 12, 0, Math.PI * 2);
+          ctx.arc(cx + 30, cy - 50, 12, 0, Math.PI * 2);
+        });
 
-        // Draw sweet smiling face embroidery on backpack pocket
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#faf5ff';
-          ctx.beginPath();
-          ctx.roundRect(cx - 30, cy + 10, 60, 42, 10);
-          ctx.fill();
-          ctx.stroke();
-        }, '#a78bfa', 2);
+        // Toy-style zipper pocket panel (Bright lemon yellow)
+        drawColoredShape('#d97706', '#fef3c7', 1.2, () => {
+          ctx.roundRect(cx - 25, cy + 12, 56, 40, 8);
+        });
 
-        // face
-        drawCrayonPath(() => {
+        // Pack's small bear nose face
+        drawColoredShape('#4c1d95', '#4c1d95', 1, () => {
+          ctx.arc(cx - 4, cy + 28, 1.2, 0, Math.PI * 2);
+          ctx.arc(cx + 12, cy + 28, 1.2, 0, Math.PI * 2);
           ctx.beginPath();
-          ctx.arc(cx - 10, cy + 25, 1.5, 0, Math.PI * 2);
-          ctx.arc(cx + 10, cy + 25, 1.5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(cx, cy + 29, 3.5, 0, Math.PI);
+          ctx.arc(cx + 4, cy + 32, 2.5, 0, Math.PI);
           ctx.stroke();
-        }, '#4c1d95', 1.5);
+        });
+
+        // Lanyard loop hanger on top
+        drawColoredShape('#6d28d9', '#c084fc', 2, () => {
+          ctx.arc(cx + 3, cy - 50, 8, Math.PI, 0);
+        });
 
         // Annotations
         ctx.fillStyle = '#6d28d9';
-        ctx.font = 'bold 11px "Quicksand", sans-serif';
+        ctx.font = 'bold 11.5px "Inter", sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('🎒 熊嘟嘟萌耳防丢防拐小书包', cx + 58, cy + 10);
+        ctx.fillText('抗菌定位防摔熊耳双肩背包', cx + 60, cy + 10);
         
-        ctx.fillStyle = '#0f766e';
-        ctx.font = '10px "Quicksand", sans-serif';
-        ctx.fillText('🎈 双肩超柔云感减压肩带 (Ultra Light)', cx + 58, cy + 26);
-        ctx.fillText('🌈 背面全彩微晶透亮柔光灯组', cx + 58, cy + 42);
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText('・防震：高孔蜂窝透气中空物理肩垫', cx + 60, cy + 26);
+        ctx.fillText('・反光：背面高透微晶逆反射荧光条', cx + 60, cy + 42);
+        ctx.fillText('・工艺：高耐磨防割拒水涤纶长棉织', cx + 60, cy + 58);
         break;
 
       case '旅行印章机':
-        // Draw cute stamp machine modeled like a happy little mushroom!
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fff5f5'; // red hue
-          ctx.beginPath();
-          // Round mushroom cap
-          ctx.arc(cx, cy - 25, 35, Math.PI, 0);
+        // Mushroom dynamic plunger design (Strawberry Red cap)
+        drawColoredShape('#dc2626', '#fee2e2', 2.2, () => {
+          ctx.arc(cx - 8, cy - 25, 36, Math.PI, 0);
           ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }, '#ef4444', 3.5); // red-500 crayons
+        });
 
-        // Mushroom white dots
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
-          ctx.arc(cx - 15, cy - 38, 5, 0, Math.PI * 2);
-          ctx.arc(cx + 15, cy - 38, 5, 0, Math.PI * 2);
-          ctx.arc(cx, cy - 48, 6, 0, Math.PI * 2);
-          ctx.fill();
-        }, '#ffffff', 0.5);
+        // White decorative polka dots inside strawberry cap
+        drawColoredShape('#ef4444', '#ffffff', 0.5, () => {
+          ctx.arc(cx - 25, cy - 38, 4.5, 0, Math.PI * 2);
+          ctx.arc(cx + 10, cy - 38, 4.5, 0, Math.PI * 2);
+          ctx.arc(cx - 8, cy - 48, 5, 0, Math.PI * 2);
+        });
 
-        // Stem plunger and base
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
-          ctx.roundRect(cx - 16, cy - 10, 32, 70, 8);
-          ctx.fill();
-          ctx.stroke();
-        }, '#f43f5e', 2.5);
+        // White sturdy ergonomic stem container
+        drawColoredShape('#ef4444', '#ffffff', 1.8, () => {
+          ctx.roundRect(cx - 20, cy - 10, 24, 65, 5);
+        });
 
-        // Little stamp inkpad bottom
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#ffe4e6';
-          ctx.beginPath();
-          ctx.roundRect(cx - 28, cy + 45, 56, 18, 6);
-          ctx.fill();
-          ctx.stroke();
-        }, '#ef4444', 3);
+        // Cheerful ink stamp base housing (Vibrant candy orange)
+        drawColoredShape('#ea580c', '#ffedd5', 2.2, () => {
+          ctx.roundRect(cx - 32, cy + 40, 48, 18, 5);
+        });
 
-        // Annotations
-        ctx.fillStyle = '#b91c1c';
-        ctx.font = 'bold 11px "Quicksand", sans-serif';
+        // Specifications and details
+        ctx.fillStyle = '#dc2626';
+        ctx.font = 'bold 11.5px "Inter", sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('🍄 敲章打卡“小红菇”趣味印章机', cx + 45, cy - 35);
+        ctx.fillText('物理微机电印盖打卡模组', cx + 50, cy - 35);
         
-        ctx.fillStyle = '#0f766e';
-        ctx.font = '10px "Quicksand", sans-serif';
-        ctx.fillText('🎨 亲肤级天然无毒防过敏安全印油', cx + 45, cy - 18);
-        ctx.fillText('🗺️ 走到特定景区集点自动释放锁扣', cx + 45, cy - 2);
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText('・印油：无毒环保可洗植物花青素浆', cx + 50, cy - 18);
+        ctx.fillText('・卡销：近场UWB验证解锁自动爆破栓', cx + 50, cy - 2);
+        ctx.fillText('・防护：整件尺寸符合ASTM窒息基准', cx + 50, cy + 14);
         break;
 
       case '贴纸机':
-        // Draw sweet friendly sticker tape printer looking like a happy toy toaster
-        // Printer casing
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fffbeb';
-          ctx.beginPath();
-          ctx.roundRect(cx - 45, cy - 35, 90, 75, 15);
-          ctx.fill();
-          ctx.stroke();
-        }, '#f59e0b', 3.5); // amber crayons yellow
+        // Printer casing (Bright Tangerine Orange)
+        drawColoredShape('#ea580c', '#fff7ed', 2.2, () => {
+          ctx.roundRect(cx - 45, cy - 30, 85, 70, 15);
+        });
 
-        // Sticker tape strip feeding out with wave line
-        drawCrayonPath(() => {
-          ctx.fillStyle = '#fff';
-          ctx.beginPath();
-          ctx.rect(cx - 28, cy + 30, 56, 25);
-          ctx.fill();
-          ctx.stroke();
-        }, '#10b981', 2); // green sticker tape paper outline
+        // Exit printed sticker sheet paper (Sweet Lime green printed sheet)
+        drawColoredShape('#15803d', '#f0fdf4', 1.8, () => {
+          ctx.rect(cx - 28, cy + 30, 52, 22);
+        });
 
-        // smiley face sticker print drawing
-        drawCrayonPath(() => {
+        // Printed teddy smile face illustration on sticker
+        drawColoredShape('#166534', '#166534', 1, () => {
+          ctx.arc(cx - 8, cy + 38, 1.2, 0, Math.PI * 2);
+          ctx.arc(cx + 8, cy + 38, 1.2, 0, Math.PI * 2);
           ctx.beginPath();
-          // eyes
-          ctx.arc(cx - 8, cy + 40, 1.5, 0, Math.PI * 2);
-          ctx.arc(cx + 8, cy + 40, 1.5, 0, Math.PI * 2);
-          ctx.fill();
-          // smile
-          ctx.beginPath();
-          ctx.arc(cx, cy + 42, 4, 0, Math.PI);
+          ctx.arc(cx, cy + 41, 3, 0, Math.PI);
           ctx.stroke();
-        }, '#047857', 1.5);
+        });
 
-        // Cute rotary key button on side
-        drawCrayonPath(() => {
-          ctx.beginPath();
+        // Cute gear wheel for rotary paper scroll
+        drawColoredShape('#1e293b', '#64748b', 1.5, () => {
           ctx.arc(cx - 45, cy - 5, 6, 0, Math.PI * 2);
-          ctx.stroke();
-        }, '#d97706', 2);
+        });
 
-        // Annotations
-        ctx.fillStyle = '#b45309';
-        ctx.font = 'bold 11px "Quicksand", sans-serif';
+        // Descriptions
+        ctx.fillStyle = '#ea580c';
+        ctx.font = 'bold 11.5px "Inter", sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('📸 宝宝成长勋章打卡贴纸机', cx + 58, cy - 20);
+        ctx.fillText('热敏不干胶徽章打印模组', cx + 55, cy - 20);
         
-        ctx.fillStyle = '#1e3a8a';
-        ctx.font = '10px "Quicksand", sans-serif';
-        ctx.fillText('📄 免墨水热敏高阻粘性儿童无毒贴纸', cx + 58, cy - 3);
-        ctx.fillText('🎯 自带裁切齿型，防割手安全保护', cx + 58, cy + 14);
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText('・载体：零双酚A不干胶热敏微层析', cx + 55, cy - 3);
+        ctx.fillText('・防护：带物理绝缘齿的钝化裁纸口', cx + 55, cy + 14);
+        ctx.fillText('・打卡：自理挑战成功瞬时吐出贴纸', cx + 55, cy + 30);
         break;
 
       default:
@@ -536,50 +510,54 @@ export default function CarrierCanvas({ carriers }: CarrierCanvasProps) {
   }, [selectedCarrier, carriers]);
 
   return (
-    <div className="bg-[#fdf9f3] border-3 border-amber-950/20 rounded-3xl p-4 overflow-hidden shadow-[4px_4px_0px_0px_#7c2d12] flex flex-col h-full justify-between select-none relative">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-dashed border-amber-200 pb-2 mb-3">
-        <span className="text-xs font-bold text-amber-900 flex items-center gap-1.5 font-display tracking-wide uppercase">
-          <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
-          🎨 奇趣 2D 搭载物理手绘草案
+    <div className="bg-gradient-to-br from-amber-50/40 to-pink-50/30 border-2 border-orange-200/60 rounded-2xl p-4.5 overflow-hidden shadow-sm flex flex-col h-full justify-between select-none relative">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-orange-100/55 pb-2.5 mb-3">
+        <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5 font-sans tracking-wide uppercase">
+          <span className="w-2.5 h-2.5 rounded-full bg-orange-400 animate-pulse"></span>
+          2D 儿童硬件载具糖果色剖面设计图
         </span>
         {carriers.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
-            {carriers.map((carrier) => (
-              <button
-                key={carrier}
-                type="button"
-                onClick={() => setSelectedCarrier(carrier)}
-                className={`px-3 py-1 text-xs font-bold transition-all rounded-full border-2 ${
-                  selectedCarrier === carrier
-                    ? 'bg-rose-500 text-white border-amber-900 shadow-[2px_2px_0px_0px_#7c2d12]'
-                    : 'bg-white text-amber-900 border-amber-900/40 hover:bg-amber-100/50'
-                }`}
-              >
-                {carrier}
-              </button>
-            ))}
+            {carriers.map((carrier) => {
+              const theme = CARRIER_MUTED_THEMES[carrier];
+              const isSelected = selectedCarrier === carrier;
+              return (
+                <button
+                  key={carrier}
+                  type="button"
+                  onClick={() => setSelectedCarrier(carrier)}
+                  className={`px-3 py-1 text-[11px] font-bold transition-all rounded-lg border-2 ${
+                    isSelected
+                      ? theme?.activeClass || 'bg-slate-900 border-slate-900 text-white shadow-sm'
+                      : 'bg-white text-slate-650 border-orange-100 hover:border-orange-200 hover:bg-orange-50/30'
+                  }`}
+                >
+                  {carrier}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
 
-      <div className="flex-1 flex items-center justify-center relative bg-white/40 rounded-2xl p-1.5 border border-dashed border-amber-200">
+      <div className="flex-1 flex items-center justify-center relative bg-[#fffdfa]/80 rounded-xl p-1.5 border-2 border-orange-100/50 shadow-inner">
         <canvas
           ref={canvasRef}
           width={400}
           height={260}
-          className="rounded-xl border-2 border-amber-950/15 max-w-full aspect-[20/13]"
+          className="rounded-lg max-w-full aspect-[20/13]"
         />
         {carriers.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center bg-amber-50/20 backdrop-blur-[1px] pointer-events-none">
-            <span className="text-xs text-amber-700/60 font-medium bg-amber-100/80 px-3 py-1.5 rounded-full border border-amber-200">
-              🧸 暂未勾选产品物理形态
+          <div className="absolute inset-0 flex items-center justify-center bg-orange-50/20 backdrop-blur-[0.5px] pointer-events-none">
+            <span className="text-xs text-orange-600 font-extrabold bg-white px-3.5 py-2 rounded-full border border-orange-200 shadow-md flex items-center gap-1">
+              🍭 请在步骤中选定形态载具 (手环、挂坠等) 🎈
             </span>
           </div>
         )}
       </div>
 
-      <div className="mt-2.5 text-[10px] text-amber-800/65 font-mono text-center flex items-center justify-center gap-1">
-        <span>✏️ 童伴实验室自动拟定 CMF 安全工程图样 / Vector Blueprint</span>
+      <div className="mt-2 text-[9.5px] text-orange-400/80 font-mono text-center flex items-center justify-center gap-1.5">
+        <span>© KidAI CAD-Draft Co-creation Labs • Child Safety Approved</span>
       </div>
     </div>
   );

@@ -1,111 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@400..700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Quicksand", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fredoka", "Quicksand", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
-/* Custom visual styles for a child-friendly, playful toy station */
-.toy-card {
-  border: 2px solid #a16207; /* amber-700 */
-  border-radius: 24px;
-  background-color: #ffffff;
-  box-shadow: 4px 4px 0px 0px #a16207;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
-}
-
-.toy-card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 7px 7px 0px 0px #a16207;
-}
-
-.toy-card-soft {
-  background: #ffffff;
-  border: 2px solid #fecdd3; /* rose-200 */
-  border-radius: 20px;
-  box-shadow: 0 4px 14px 0 rgba(244, 63, 94, 0.05);
-  transition: all 0.2s ease;
-}
-
-.toy-card-soft:hover {
-  border-color: #fda4af; /* rose-300 */
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px 0 rgba(244, 63, 94, 0.08);
-}
-
-.notebook-paper {
-  background-color: #fffdf9; /* creamy pencil warm background */
-  background-image: 
-    radial-gradient(circle, #f3e8ff 10%, transparent 10%),
-    radial-gradient(circle, #fef08a 10%, transparent 10%);
-  background-size: 32px 32px;
-  background-position: 0 0, 16px 16px;
-}
-
-/* Color patterns */
-.pastela-yellow { background-color: #fef08a; } /* yellow-200 */
-.pastela-orange { background-color: #fed7aa; } /* orange-200 */
-.pastela-pink { background-color: #fbcfe8; } /* pink-200 */
-.pastela-green { background-color: #bbf7d0; } /* green-200 */
-.pastela-blue { background-color: #bae6fd; } /* sky-200 */
-.pastela-purple { background-color: #e9d5ff; } /* purple-200 */
-
-/* Base scrollbar customization - rounded style */
+/* Base scrollbar customization - minimal industrial style */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #fefaf0;
-  border-radius: 8px;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #fbd38d; /* orange-300 */
-  border-radius: 8px;
-  border: 2px solid #fefaf0;
+  background: #cbd5e1;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #f6ad55; /* orange-400 */
+  background: #94a3b8;
 }
 
-/* Custom kid-friendly doodles grid background */
-.blueprint-grid-kid {
-  background-image: 
-    linear-gradient(to right, rgba(230, 210, 185, 0.25) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(230, 210, 185, 0.25) 1px, transparent 1px);
-  background-size: 16px 16px;
-}
-
-/* Bouncy animations */
-@keyframes hop {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-.animate-hop {
-  animation: hop 2s ease-in-out infinite;
-}
-
-@keyframes wiggle {
-  0%, 100% { transform: rotate(-1deg); }
-  50% { transform: rotate(1deg); }
-}
-
-.animate-wiggle {
-  animation: wiggle 3s ease-in-out infinite;
-}
-
-/* Fade animations for wizard transitions */
+/* Fade animations for workspace Transitions */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
