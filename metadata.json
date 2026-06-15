@@ -1,0 +1,8 @@
+{
+  "name": "Remix: AI Product Definition Workbench",
+  "description": "A step-by-step interactive workstation for designer collaborative product defining, sensor alignment, and tactile behavior sensory loop validation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
